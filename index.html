@@ -3,7 +3,7 @@
 
 <head>
     <title>ROCK PAPER SCISSORS</title>
-    <link rel="icon" href="image/Rock+Paper+Scissors+Logo.png">
+    <link rel="icon" href="Rock+Paper+Scissors+Logo.png">
 
     <style>
         body {
@@ -61,11 +61,11 @@
 <body>
     <center>
         <p class="title">Rock Paper Scissor</p>
-        <button class="player-btn" onclick="playGame('rock')"><img class="player-move" src="image/rock.jpg"
+        <button class="player-btn" onclick="playGame('rock')"><img class="player-move" src="rock.jpg"
                 alt=""></button>
-        <button class="player-btn" onclick="playGame('paper')"><img class="player-move" src="image/paper.jpg"
+        <button class="player-btn" onclick="playGame('paper')"><img class="player-move" src="paper.jpg"
                 alt=""></button>
-        <button class="player-btn" onclick="playGame('scissor')"><img class="player-move" src="image/scissor.jpg"
+        <button class="player-btn" onclick="playGame('scissor')"><img class="player-move" src="scissor.jpg"
                 alt=""></button>
         <p class="js-result result"></p>
         <p class="js-move move">
@@ -145,8 +145,8 @@
             localStorage.setItem('score', JSON.stringify(count));
             updateScore();
             document.querySelector('.js-result').innerHTML = result;
-            document.querySelector('.js-move').innerHTML = `Your move : <img  class="player-move" src="image/${playerMove}.jpg">,
-        Computer move : <img class="player-move" src="image/${computerMove}.jpg">`}
+            document.querySelector('.js-move').innerHTML = `Your move : <img  class="player-move" src="${playerMove}.jpg">,
+        Computer move : <img class="player-move" src="${computerMove}.jpg">`}
 
         function updateScore() {
             document.querySelector('.js-score').innerHTML = `WIN : ${count.win} , LOSE : ${count.lose} , TIES : ${count.ties} , TOTAL MATCH : ${count.win + count.lose + count.ties}`
