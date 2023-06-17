@@ -8,6 +8,7 @@
     <style>
         body {
             background-color: black;
+            text-align: center;
             color: white;
             font-family: Arial, Helvetica, sans-serif;
         }
@@ -25,8 +26,6 @@
         .player-btn {
             background-color: transparent;
             border: 3px solid white;
-            /* height: 120px;
-            width: 120px; */
             border-radius: 70px;
             cursor: pointer;
             margin-right: 10px;
@@ -37,10 +36,14 @@
             font-weight: bold;
         }
 
-        .Reset {
+        .Reset,
+        .auto-play,
+        .stop {
             font-size: 20px;
             font-weight: bold;
             padding: 5px 10px;
+            margin: 5px;
+            cursor: pointer;
         }
 
         .result {
@@ -59,26 +62,19 @@
 </head>
 
 <body>
-    <center>
-        <p class="title">Rock Paper Scissor</p>
-        <button class="player-btn" onclick="playGame('rock')"><img class="player-move" src="rock.jpg"
-                alt=""></button>
-        <button class="player-btn" onclick="playGame('paper')"><img class="player-move" src="paper.jpg"
-                alt=""></button>
-        <button class="player-btn" onclick="playGame('scissor')"><img class="player-move" src="scissor.jpg"
-                alt=""></button>
-        <p class="js-result result"></p>
-        <p class="js-move move">
-        </p>
-        <p class="js-score score"></p>
-        <button class="Reset" onclick="
-    count.win=0;
-    count.lose=0;
-    count.ties=0 ;
-    localStorage.removeItem('score');
-    updateScore();
-    ">Reset game</button>
-    </center>
+
+    <p class="title">Rock Paper Scissor</p>
+    <button class="player-btn js-rock"><img class="player-move" src="rock.jpg"></button>
+    <button class="player-btn js-paper"><img class="player-move" src="paper.jpg"></button>
+    <button class="player-btn js-scissor"><img class="player-move" src="scissor.jpg"></button>
+    <p class="js-result result"></p>
+    <p class="js-move move">
+    </p>
+    <p class="js-score score"></p>
+    <button class="Reset js-reset">Reset game</button>
+    <button class="js-play auto-play">AutoPlay</button>
+    <button class="js-stop stop">Stop</button>
+
     <script>
         let count = JSON.parse(localStorage.getItem('score')) || {
             win: 0,
@@ -87,13 +83,70 @@
         }
         updateScore();
 
-        // if (count == null) {
-        //     count = {
-        //         win: 0,
-        //         lose: 0,
-        //         ties: 0
-        //     };
-        // }
+        document.querySelector('.js-rock').addEventListener('click', () => {
+            playGame('rock');
+        });
+
+        document.querySelector('.js-paper').addEventListener('click', () => {
+            playGame('paper');
+        });
+
+        document.querySelector('.js-scissor').addEventListener('click', () => {
+            playGame('scissor');
+        });
+
+        document.querySelector('.js-reset').addEventListener('click', () => {
+            count.win = 0;
+            count.lose = 0;
+            count.ties = 0;
+            localStorage.removeItem('score');
+            updateScore();
+        });
+
+        document.querySelector('.js-play').addEventListener('click', () => {
+            auto();
+        });
+        document.querySelector('.js-stop').addEventListener('click', () => {
+            stop();
+        });
+
+        document.body.addEventListener('keydown', (event) => {
+            if (event.key === 'r') {
+                playGame('rock');
+            }
+            else if (event.key === 'p') {
+                playGame('paper');
+            }
+            else if (event.key === 's') {
+                playGame('scissor');
+            }
+            else if (event.key === 'a') {
+                auto();
+            }
+            else if (event.key === 'Enter') {
+                stop();
+            }
+            else if (event.key === 'Backspace') {
+                count.win = 0;
+                count.lose = 0;
+                count.ties = 0;
+                localStorage.removeItem('score');
+                updateScore();
+            }
+
+        });
+
+        let stoping;
+        function auto() {
+            stoping = setInterval(() => {
+                let playerMove = PickcomputerMove();
+                playGame(playerMove);
+            }, 1000);
+        }
+        function stop() {
+            clearInterval(stoping);
+        }
+
         function playGame(playerMove) {
             let computerMove = PickcomputerMove();
             let result = '';
@@ -146,7 +199,8 @@
             updateScore();
             document.querySelector('.js-result').innerHTML = result;
             document.querySelector('.js-move').innerHTML = `Your move : <img  class="player-move" src="${playerMove}.jpg">,
-        Computer move : <img class="player-move" src="${computerMove}.jpg">`}
+        Computer move : <img class="player-move" src="${computerMove}.jpg">`
+        }
 
         function updateScore() {
             document.querySelector('.js-score').innerHTML = `WIN : ${count.win} , LOSE : ${count.lose} , TIES : ${count.ties} , TOTAL MATCH : ${count.win + count.lose + count.ties}`
